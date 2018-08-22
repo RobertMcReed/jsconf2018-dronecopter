@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "ar-drone": "^0.3.3"
+  },
+  "scripts": {
+    "repl": "node repl.js"
   }
 }
