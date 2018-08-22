@@ -34,10 +34,11 @@ const handleVideo = (client, state, onRect) => {
       
       if (key == 113) {
         stream = false;
-        console.log('Killing drone')
-        cv.destroyAllWindows()
-        client.stop()
-        client.land()
+        console.log('Killing drone');
+        cv.destroyAllWindows();
+        client.stop();
+        client.land();
+        process.exit();
       }
     }
   });

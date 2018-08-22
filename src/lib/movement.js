@@ -45,13 +45,6 @@ function instructClient(result, state) {
   var up = 120;
   var down = 240;
 
-  // var midX = 320;
-  // var midY = 180;
-  // var deltaX = result.x - midX;
-  // var deltaY = result.y - midY;
-  // var moving = false;
-  // var movementTolerance = config.neutralZone / 2;
-
   if (result.x > right) {
     config.arClient.right(config.speedX);
     console.log('Drone, move right!');
@@ -95,10 +88,31 @@ function receiveData(rect, state) {
   }
 }
 
+const model = {
+  left: function (speed) {
+    console.log('Moving left at:', speed);
+  },
+  right: function (speed) {
+    console.log('Moving right at:', speed);
+  },
+  up: function (speed) {
+    console.log('Moving up at:', speed);
+  },
+  down: function (speed) {
+    console.log('Moving down at:', speed);
+  },
+  stop: function () {
+    console.log('Stopping!');
+  },
+  land: function () {
+    console.log('Landing!')
+  }
+};
 
 module.exports = {
   arClient: setArClient,
   setDataHandler: setDataHandler,
   setSampleSize: setSampleSize,
-  push: receiveData
+  push: receiveData,
+  model
 };
