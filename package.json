@@ -4,7 +4,8 @@
   },
   "scripts": {
     "repl": "node src/repl.js",
-    "flipit": "node src/flip.js"
+    "flipit": "node src/flip.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "opencv4nodejs": "^4.7.2"

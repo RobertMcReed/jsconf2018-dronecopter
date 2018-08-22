@@ -151,3 +151,4 @@ $RECYCLE.BIN/
 node_modules/*
 .vscode
 .idea
+sandbox.js
