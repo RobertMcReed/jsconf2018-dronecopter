@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "ar-drone": "^0.3.3"
+  }
+}
