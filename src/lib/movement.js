@@ -71,7 +71,7 @@ function instructClient(result) {
   }
 
   if (!moving) {
-    // config.client.stop();
+    config.arClient.stop();
     console.log('Drone, stop!');
   }
 }
