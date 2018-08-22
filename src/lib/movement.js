@@ -35,52 +35,44 @@ function recordHistory(result) {
   }
 }
 
-function instructClient(result) {
+function instructClient(result, moving) {
   if (!config.arClient) return;
   recordHistory(result);
 
-  var midX = result.w / 2;
-  var midY = result.h / 2;
-  var deltaX = result.x - midX;
-  var deltaY = result.y - midY;
-  var moving = false;
-  var movementTolerance = config.neutralZone / 2;
+  var left = 213;
+  var right = 426;
+  var up = 120;
+  var down = 240;
 
-  if (deltaX < 0 && Math.abs(deltaX) > movementTolerance) {
-    config.arClient.left(0.2);
-    console.log('Drone, move left!');
-    moving = true;
-  }
+  // var midX = 320;
+  // var midY = 180;
+  // var deltaX = result.x - midX;
+  // var deltaY = result.y - midY;
+  // var moving = false;
+  // var movementTolerance = config.neutralZone / 2;
 
-  if (deltaX > 0 && Math.abs(deltaX) > movementTolerance) {
+  if (result.x > right) {
     config.arClient.right(0.2);
     console.log('Drone, move right!');
     moving = true;
-  }
-
-  if (deltaY > 0 && Math.abs(deltaY) > movementTolerance) {
-    config.arClient.up(0.2);
-    console.log('Drone, move up!');
+  } else if (result.x < left) {
+    config.arClient.left(0.2);
+    console.log('Drone, move left!');
     moving = true;
-  }
-
-  if (deltaY < 0 && Math.abs(deltaY) > movementTolerance) {
-    config.arClient.down(0.2);
-    console.log('Drone, move down!');
-    moving = true;
-  }
-
-  if (!moving) {
+  } else {
     config.arClient.stop();
     console.log('Drone, stop!');
+    moving = false;
   }
+
+  return moving;
 }
 
 // Rect { height: 160, width: 160, y: 131, x: 219 }
-function receiveData(rect) {
+function receiveData(rect, moving) {
   dataCounter += 1;
-  xBuffer += rect.x;
-  yBuffer += rect.y;
+  xBuffer += rect.x + rect.width / 2;
+  yBuffer += rect.y + rect.height / 2;
   hBuffer += rect.height;
   wBuffer += rect.width;
 
@@ -97,11 +89,13 @@ function receiveData(rect) {
     config.dataHandler(result);
 
     // Emit client instructions
-    instructClient(result);
+    moving = instructClient(result, moving);
 
     // Reset
     dataCounter = xBuffer = yBuffer = hBuffer = wBuffer = 0;
   }
+
+  return moving;
 }
 
 
