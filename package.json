@@ -3,6 +3,7 @@
     "ar-drone": "^0.3.3"
   },
   "scripts": {
-    "repl": "node repl.js"
+    "repl": "node src/repl.js",
+    "flipit": "node src/flip.js"
   }
 }
