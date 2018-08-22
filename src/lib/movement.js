@@ -10,8 +10,9 @@ var config = {
   dataHandler: function(result) {
     console.log('Result:', result);
   },
-  sampleSize: 7, // We get about 14 data samples per second from the drone.
-  neutralZone: 10 // in size units (px?)
+  sampleSize: 3, // We get about 14 data samples per second from the drone.
+  neutralZone: 10, // in size units (px?)
+  speedX: 0.1
 };
 
 function setDataHandler(handler) {
@@ -52,11 +53,11 @@ function instructClient(result, state) {
   // var movementTolerance = config.neutralZone / 2;
 
   if (result.x > right) {
-    config.arClient.right(0.2);
+    config.arClient.right(config.speedX);
     console.log('Drone, move right!');
     state.moving = true;
   } else if (result.x < left) {
-    config.arClient.left(0.2);
+    config.arClient.left(config.speedX);
     console.log('Drone, move left!');
     state.moving = true;
   } else if (state.moving) {

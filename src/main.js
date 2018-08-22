@@ -6,7 +6,8 @@ client.config('control:altitude_max', 3000);
 
 const state = { moving: false };
 
-let simulation = true;
+let simulation = false;
+// let simulation = true;
 
 const model = {
   left: function (speed) {
@@ -38,13 +39,13 @@ try {
 
     client
     .after(5000, function() {
-      this.up(0.2);
+      this.up(0.5);
     })
-    .after(1500, function() {
+    .after(2000, function() {
       this.stop();
     })
-    .after(500, function() {
-      handleVideo(client, state, (rect, state) => {
+    .after(100, function() {
+      handleVideo(client, state, (rect) => {
         movement.push(rect, state);
       });
     });

@@ -1,10 +1,11 @@
 const cv = require('opencv4nodejs');
 const { drawGreenRect } = require('./util.js');
+let stream = true;
   
 const handleVideo = (client, state, onRect) => {
   const pngStream = client.getPngStream();
   pngStream.on('data', async buffer => {
-    if (buffer) {
+    if (buffer && stream) {
       const image = cv.imdecode(buffer);
 
       const classifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);
@@ -29,7 +30,15 @@ const handleVideo = (client, state, onRect) => {
       }
 
       cv.imshow('Drone', image)
-      cv.waitKey(1);
+      const key = cv.waitKey(1);
+      
+      if (key == 113) {
+        stream = false;
+        console.log('Killing drone')
+        cv.destroyAllWindows()
+        client.stop()
+        client.land()
+      }
     }
   });
 }
