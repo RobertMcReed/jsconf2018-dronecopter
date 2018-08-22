@@ -35,7 +35,7 @@ function recordHistory(result) {
   }
 }
 
-function instructClient(result, moving) {
+function instructClient(result, state) {
   if (!config.arClient) return;
   recordHistory(result);
 
@@ -54,22 +54,20 @@ function instructClient(result, moving) {
   if (result.x > right) {
     config.arClient.right(0.2);
     console.log('Drone, move right!');
-    moving = true;
+    state.moving = true;
   } else if (result.x < left) {
     config.arClient.left(0.2);
     console.log('Drone, move left!');
-    moving = true;
-  } else {
+    state.moving = true;
+  } else if (state.moving) {
     config.arClient.stop();
     console.log('Drone, stop!');
-    moving = false;
+    state.moving = false;
   }
-
-  return moving;
 }
 
 // Rect { height: 160, width: 160, y: 131, x: 219 }
-function receiveData(rect, moving) {
+function receiveData(rect, state) {
   dataCounter += 1;
   xBuffer += rect.x + rect.width / 2;
   yBuffer += rect.y + rect.height / 2;
@@ -89,13 +87,11 @@ function receiveData(rect, moving) {
     config.dataHandler(result);
 
     // Emit client instructions
-    moving = instructClient(result, moving);
+    instructClient(result, state);
 
     // Reset
     dataCounter = xBuffer = yBuffer = hBuffer = wBuffer = 0;
   }
-
-  return moving;
 }
 
 

@@ -3,7 +3,8 @@ const { handleVideo } = require('./video');
 const movement = require('./lib/movement');
 const client = arDrone.createClient();
 client.config('control:altitude_max', 3000);
-let moving = false;
+
+const state = { moving: false };
 
 let simulation = true;
 
@@ -30,7 +31,6 @@ const model = {
 
 movement.arClient(simulation ? model : client);
 
-
 try {
   console.log('[INFO] Taking off')
   if (!simulation) {
@@ -44,13 +44,13 @@ try {
       this.stop();
     })
     .after(500, function() {
-      handleVideo(client, moving, (rect, moving) => {
-        moving = movement.push(rect, moving);
+      handleVideo(client, state, (rect, state) => {
+        movement.push(rect, state);
       });
     });
   } else {
-    handleVideo(client, moving, (rect, moving) => {
-      moving = movement.push(rect, moving);
+    handleVideo(client, state, (rect) => {
+      movement.push(rect, state);
     });
   }
 } catch (e) {

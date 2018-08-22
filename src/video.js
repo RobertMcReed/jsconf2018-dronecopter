@@ -1,7 +1,7 @@
 const cv = require('opencv4nodejs');
 const { drawGreenRect } = require('./util.js');
   
-const handleVideo = (client, moving, onRect) => {
+const handleVideo = (client, state, onRect) => {
   const pngStream = client.getPngStream();
   pngStream.on('data', async buffer => {
     if (buffer) {
@@ -22,9 +22,10 @@ const handleVideo = (client, moving, onRect) => {
       if (rect) {
         drawGreenRect(image, rect)
         if (onRect) onRect(rect)
-      } else if (moving) {
+      } else if (state.moving) {
         console.log('Drone stopping')
         client.stop()
+        state.moving = false;
       }
 
       cv.imshow('Drone', image)
