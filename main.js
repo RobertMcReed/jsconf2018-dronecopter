@@ -1,5 +1,6 @@
 const arDrone = require('ar-drone');
 const client = arDrone.createClient();
+client.config('control:altitude_max', 3000);
 
 try {
   client.takeoff();
